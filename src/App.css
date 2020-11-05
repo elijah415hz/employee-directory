@@ -19,3 +19,8 @@ table th {
   background-color: #5571ce;
   color: white;
 }
+
+table th:hover {
+  cursor: pointer;
+}
+
