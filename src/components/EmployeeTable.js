@@ -3,15 +3,15 @@ import React from 'react'
 export default function EmployeeTable (props) {
         return (
             <div>
-                <table>
+                <table className="mx-auto">
                     <thead>
                         <tr>
                             <th>Picture</th>
-                            <th onClick={props.methods.sortByName}>Name</th>
-                            <th onClick={props.methods.sortByEmail}>Email</th>
+                            <th onClick={() => props.methods.sortBy("name", "first")}>Name</th>
+                            <th onClick={() => props.methods.sortBy("email")}>Email</th>
                             <th>Phone</th>
-                            <th onClick={props.methods.sortByAge}>Age</th>
-                            <th onClick={props.methods.sortByState}>Location</th>
+                            <th onClick={() => props.methods.sortBy("dob", "age")}>Age</th>
+                            <th onClick={() => props.methods.sortBy("location", "state")}>Location</th>
                         </tr>
                     </thead>
                     <tbody>

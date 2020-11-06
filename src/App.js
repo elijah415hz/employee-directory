@@ -17,7 +17,7 @@ export default class App extends Component {
   getEmployees = () => {
   axios.get("https://randomuser.me/api/?results=200&nat=us")
       .then(res => {
-          console.log(res.data.results[0])
+          // console.log(res.data.results[0])
           this.setState({ employees: res.data.results.slice(0, 20) })
       })
       .catch(err => console.log(err));
@@ -34,7 +34,7 @@ export default class App extends Component {
     event.preventDefault()
 
   }
-
+  
   arraysEqual(a, b) {
     for (let i = 0; i < a.length; ++i) {
       if (a[i] !== b[i]) return false;
@@ -42,47 +42,24 @@ export default class App extends Component {
     return true;
   }
 
-  sortByName = () => {
+  sortBy = (key1, key2) => {
       let employees = [...this.state.employees]
-      let sortedEmployees = employees.sort((a, b) => (a.name.first >= b.name.first) ? 1:-1)
+      let sortedEmployees = employees.sort((a, b) => a[key1][key2] >= b[key1][key2] ? 1:-1)
+      // If the array is already sorted ascending, sort it descending
       if (this.arraysEqual(sortedEmployees, this.state.employees)) {
-          sortedEmployees = employees.sort((a, b) => (a.name.first <= b.name.first) ? 1:-1)
+          sortedEmployees = employees.sort((a, b) => a[key1][key2] <= b[key1][key2] ? 1:-1)
       }
+      console.log(sortedEmployees)
       this.setState({employees: sortedEmployees})
   }
-
-  sortByEmail = () => {
-      let employees = [...this.state.employees]
-      let sortedEmployees = employees.sort((a, b) => (a.email >= b.email) ? 1:-1)
-      if (this.arraysEqual(sortedEmployees, this.state.employees)) {
-          sortedEmployees = employees.sort((a, b) => (a.email <= b.email) ? 1:-1)
-      }
-      this.setState({employees: sortedEmployees})
-  }
-
-  sortByState = () => {
-      let employees = [...this.state.employees]
-      let sortedEmployees = employees.sort((a, b) => (a.location.state >= b.location.state) ? 1:-1)
-      if (this.arraysEqual(sortedEmployees, this.state.employees)) {
-          sortedEmployees = employees.sort((a, b) => (a.location.state <= b.location.state) ? 1:-1)
-      }
-      this.setState({employees: sortedEmployees})
-  }
-
-  sortByAge = () => {
-      let employees = [...this.state.employees]
-      let sortedEmployees = employees.sort((a, b) => (a.dob.age >= b.dob.age) ? 1:-1)
-      if (this.arraysEqual(sortedEmployees, this.state.employees)) {
-          sortedEmployees = employees.sort((a, b) => (a.dob.age <= b.dob.age) ? 1:-1)
-      }
-      this.setState({employees: sortedEmployees})
-  }
-
 
   render() {
     let filteredEmployees = this.state.employees
+    // Start filtering the array if there's anything in the search box
     if (this.state.search) {
-      filteredEmployees = this.state.employees.filter(employee=>employee.name.first.substring(0, this.state.search.length) === this.state.search)
+      filteredEmployees = this.state.employees.filter(employee=>{
+        return employee.name.first.substring(0, this.state.search.length) === this.state.search
+      })
     }
     return (
       <div>
@@ -93,12 +70,8 @@ export default class App extends Component {
       }}
       search = {this.state.search}
       />
-      <EmployeeTable methods={{
-        sortByName: this.sortByName,
-        sortByAge: this.sortByAge,
-        sortByEmail: this.sortByEmail,
-        sortByState: this.sortByState,
-      }} 
+      <EmployeeTable 
+      methods={{sortBy: this.sortBy}} 
       employees = {filteredEmployees}
       />
     </div>
