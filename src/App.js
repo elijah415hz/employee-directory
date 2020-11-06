@@ -17,7 +17,7 @@ export default class App extends Component {
   getEmployees = () => {
   axios.get("https://randomuser.me/api/?results=200&nat=us")
       .then(res => {
-          // console.log(res.data.results[0])
+          console.log(res.data.results[0])
           this.setState({ employees: res.data.results.slice(0, 20) })
       })
       .catch(err => console.log(err));
@@ -58,9 +58,17 @@ export default class App extends Component {
     // Start filtering the array if there's anything in the search box
     if (this.state.search) {
       filteredEmployees = this.state.employees.filter(employee=>{
-        return employee.name.first.substring(0, this.state.search.length) === this.state.search
+        return (
+          employee.name.first.includes(this.state.search) ||
+          employee.name.last.includes(this.state.search) ||
+          employee.email.includes(this.state.search) ||
+          employee.name.first.includes(this.state.search) ||
+          employee.location.state.includes(this.state.search) ||
+          employee.cell.includes(this.state.search)
+        )
       })
     }
+    // substring(0, this.state.search.length) === this.state.search
     return (
       <div>
       <h1 className="text-center">Employee Directory</h1>
