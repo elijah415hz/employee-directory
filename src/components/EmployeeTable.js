@@ -3,6 +3,7 @@ import React from 'react'
 export default function EmployeeTable (props) {
         return (
             <div>
+            {props.employees.length > 0 ? (
                 <table className="mx-auto">
                     <thead>
                         <tr>
@@ -17,7 +18,7 @@ export default function EmployeeTable (props) {
                     <tbody>
                         {props.employees.map(employee=>{
                             return (
-                            <tr key={employee.id.value}>
+                                <tr key={employee.id.value}>
                                 <td><img src={employee.picture.thumbnail} alt="Employee"/></td>
                                 <td>{`${employee.name.first} ${employee.name.last}`}</td>
                                 <td>{employee.email}</td>
@@ -29,6 +30,7 @@ export default function EmployeeTable (props) {
                         })}
                     </tbody>
                 </table>
+              )  : <h1 className="text-center">Employees Loading...</h1>}
             </div>
         )
     }
