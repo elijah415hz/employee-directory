@@ -53,11 +53,10 @@ export default class App extends Component {
       this.setState({employees: sortedEmployees})
   }
 
-  render() {
-    let filteredEmployees = this.state.employees
-    // Start filtering the array if there's anything in the search box
+  filterEmployees =  () => {
+  // Start filtering the array if there's anything in the search box
     if (this.state.search) {
-      filteredEmployees = this.state.employees.filter(employee=>{
+      return this.state.employees.filter(employee=>{
         return (
           employee.name.first.includes(this.state.search) ||
           employee.name.last.includes(this.state.search) ||
@@ -67,9 +66,13 @@ export default class App extends Component {
           employee.cell.includes(this.state.search)
         )
       })
-    }
-    // substring(0, this.state.search.length) === this.state.search
-    return (
+    } else {
+      return this.state.employees
+    } 
+  }
+
+  render() {
+     return (
       <div>
       <h1 className="text-center">Employee Directory</h1>
       <Search methods={{
@@ -80,7 +83,7 @@ export default class App extends Component {
       />
       <EmployeeTable 
       methods={{sortBy: this.sortBy}} 
-      employees = {filteredEmployees}
+      employees = {this.filterEmployees()}
       />
     </div>
   );
